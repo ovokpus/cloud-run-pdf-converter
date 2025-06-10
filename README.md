@@ -1,4 +1,4 @@
-# Cloud Run PDF Converter
+# Cloud Run PDF Converter - JavaScript
 
 Build a Serverless App with Cloud Run that converts source files from other formates into PDF with Javascript and PubSub
 
