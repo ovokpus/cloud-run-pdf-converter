@@ -1,7 +1,6 @@
 # Cloud Run PDF Converter
-Build a Serverless App with Cloud Run that converts source files from other formates into PDF with Javascript and PubSub
 
-Here’s a comprehensive playbook you can drop into your repo’s README. It walks through each task—explains the core concepts, shows the commands you’ll run, and highlights why each step matters.
+Build a Serverless App with Cloud Run that converts source files from other formates into PDF with Javascript and PubSub
 
 > **Summary:** In this guide, you’ll build a fully serverless DOCX-to-PDF conversion pipeline using Google Cloud Run, Cloud Build, Cloud Storage, and Pub/Sub. You’ll containerize a Node.js/LibreOffice converter, automate builds, deploy a secure, scale-to-zero service, and wire in event-driven triggers so that every file uploaded is automatically converted and stored—effortlessly and cost-efficiently.
 
@@ -9,17 +8,17 @@ Here’s a comprehensive playbook you can drop into your repo’s README. It wal
 
 ## Business Use Cases
 
-* **Reliable Invoicing:** Customers often struggle to open DOCX attachments. Automating conversion to PDF ensures universal readability, boosting satisfaction and reducing support overhead.
-* **Cost-Effective Automation:** By leveraging serverless, you pay only for actual conversion time—zero cost when idle—and offload all infrastructure management to Google ([cloud.google.com][1]).
-* **Backlog Processing:** Beyond real-time uploads, you can batch-convert years of historical invoices without provisioning or managing VMs.
+- **Reliable Invoicing:** Customers often struggle to open DOCX attachments. Automating conversion to PDF ensures universal readability, boosting satisfaction and reducing support overhead.
+- **Cost-Effective Automation:** By leveraging serverless, you pay only for actual conversion time—zero cost when idle—and offload all infrastructure management to Google ([cloud.google.com][1]).
+- **Backlog Processing:** Beyond real-time uploads, you can batch-convert years of historical invoices without provisioning or managing VMs.
 
 ---
 
 ## Prerequisites
 
-* A Google Cloud project with billing enabled
-* **gcloud CLI** installed and authenticated (`gcloud init`)
-* **Cloud Shell** (or any environment with Docker, Node.js, and `gsutil`)
+- A Google Cloud project with billing enabled
+- **gcloud CLI** installed and authenticated (`gcloud init`)
+- **Cloud Shell** (or any environment with Docker, Node.js, and `gsutil`)
 
 ---
 
@@ -48,8 +47,8 @@ Cloud Run is a fully managed, serverless compute platform that runs stateless co
 
 ### Concepts:
 
-* **Containers** package code + dependencies into immutable images, ensuring consistent behavior everywhere ([medium.com][2]).
-* **LibreOffice** provides headless conversion of office documents to PDFs.
+- **Containers** package code + dependencies into immutable images, ensuring consistent behavior everywhere ([medium.com][2]).
+- **LibreOffice** provides headless conversion of office documents to PDFs.
 
 ### Dockerfile Manifest
 
@@ -70,9 +69,9 @@ CMD ["npm", "start"]
 
 This manifest:
 
-* Uses Node.js 20 as the base.
-* Installs LibreOffice so your container can convert files.
-* Declares `npm start` as the entrypoint.
+- Uses Node.js 20 as the base.
+- Installs LibreOffice so your container can convert files.
+- Declares `npm start` as the entrypoint.
 
 ---
 
@@ -83,10 +82,10 @@ Create `cloudbuild.yaml`:
 
 ```yaml
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/pdf-converter:latest', '.']
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/pdf-converter:latest", "."]
 images:
-- 'gcr.io/$PROJECT_ID/pdf-converter:latest'
+  - "gcr.io/$PROJECT_ID/pdf-converter:latest"
 ```
 
 Run:
@@ -113,8 +112,8 @@ gcloud run deploy pdf-converter \
   --max-instances=1
 ```
 
-* `--no-allow-unauthenticated` enforces IAM checks on every request ([cloud.google.com][5]).
-* `--max-instances=1` caps scale to control costs.
+- `--no-allow-unauthenticated` enforces IAM checks on every request ([cloud.google.com][5]).
+- `--max-instances=1` caps scale to control costs.
 
 Capture the URL:
 
@@ -146,10 +145,10 @@ gsutil notification create \
   -f json \
   -e OBJECT_FINALIZE \
   gs://$GOOGLE_CLOUD_PROJECT-upload
-``` :contentReference[oaicite:7]{index=7}  
+``` :contentReference[oaicite:7]{index=7}
 
-### 6.3 Configure Invocation IAM  
-1. Create an invoker service account:  
+### 6.3 Configure Invocation IAM
+1. Create an invoker service account:
    ```bash
    gcloud iam service-accounts create pubsub-cloud-run-invoker \
      --display-name "PubSub Cloud Run Invoker"
@@ -164,6 +163,7 @@ gsutil notification create \
      --platform managed \
      --region us-west1
    ```
+
 3. Allow Pub/Sub to mint tokens for this account ([cloud.google.com][7]):
 
    ```bash
@@ -180,12 +180,12 @@ gcloud beta pubsub subscriptions create pdf-conv-sub \
   --topic new-doc \
   --push-endpoint=$SERVICE_URL \
   --push-auth-service-account=pubsub-cloud-run-invoker@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
-``` :contentReference[oaicite:10]{index=10}  
+``` :contentReference[oaicite:10]{index=10}
 
 ---
 
-## 7. Verify the Trigger & Inspect Logs  
-1. Upload a test file:  
+## 7. Verify the Trigger & Inspect Logs
+1. Upload a test file:
    ```bash
    gsutil cp gs://spls/gsp644/sample*.docx gs://$GOOGLE_CLOUD_PROJECT-upload
 ````
