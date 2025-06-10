@@ -244,8 +244,6 @@ Giving LibreOffice 2 GiB improves conversion reliability on large documents.
 
 ---
 
-With this playbook in your README, new team members can onboard in minutes, understand each concept, and see exactly how to reproduce and extend your serverless PDF-conversion pipeline.
-
 [1]: https://cloud.google.com/serverless?utm_source=chatgpt.com "Serverless | Google Cloud"
 [2]: https://medium.com/%40sadoksmine8/serverless-architectures-building-with-google-cloud-run-a-detailed-guide-0aa219d75387?utm_source=chatgpt.com "Serverless Architectures: Building with Google Cloud Run - Medium"
 [3]: https://cloud.google.com/build/docs/building/build-containers?utm_source=chatgpt.com "Build container images | Cloud Build Documentation - Google Cloud"
