@@ -1,5 +1,11 @@
 # Cloud Run PDF Converter - JavaScript
 
+---
+
+![image](./img/architecture.png)
+
+---
+
 Build a Serverless App with Cloud Run that converts source files from other formates into PDF with Javascript and PubSub
 
 > **Summary:** In this guide, you’ll build a fully serverless DOCX-to-PDF conversion pipeline using Google Cloud Run, Cloud Build, Cloud Storage, and Pub/Sub. You’ll containerize a Node.js/LibreOffice converter, automate builds, deploy a secure, scale-to-zero service, and wire in event-driven triggers so that every file uploaded is automatically converted and stored—effortlessly and cost-efficiently.
